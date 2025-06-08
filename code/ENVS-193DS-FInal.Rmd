@@ -26,6 +26,11 @@ library(ggplot2)
 library(magick)
 ```
 
+```{r}
+#read in SB LTER data for this assignment (problem 2)
+sst <-read.csv(here("data", "SST_update2023.csv"))
+```
+
 ## Problem 1. Research Writing
 
 ### a. Transparent statistical methods
@@ -36,9 +41,24 @@ library(magick)
 
 ## Problem 2. Data visualization
 
+"This data package contains sea surface temperature (SST) data in the Santa Barbara Channel area. Data was obtained from the NOAA National Centers for Environmental Information (NCEI) at 0.25° resolution for the time between 1982 and 2023. This Daily Optimum Interpolation Sea Surface Temperature (OISST) Analysis (Version 2.1) derived its data from satellite (Advanced Very High Resolution Radiometer (AVHRR)) and in situ platforms (i.e., ships and buoys) and yielded 18 gird points within the Santa Barbara Channel."
+
 ### a. Cleaning and summarizing
 ```{r}
 #create object called sst_clean from sst
+sst_clean <- sst |> 
+  mutate(date = ymd(date),
+         year = year(date), #converting to date
+         month = month(date, label = TRUE)) |> #abbreviated month "Jan", "Feb", etc.
+  filter(year %in% 2018:2023) |> #only use data from 2018 to 2023
+  group_by(year, month) |> 
+  summarize(mean_monthly_sst = mean(temp, na.rm = TRUE), .groups = "drop")
+#need a data frame with abbreviated month, year, and mean_monthly_sst
+
+#display 5 rows from sst_clean
+slice_sample(sst_clean, n = 5)
+#structure from sst_clean
+str(sst_clean)
 ```
 
 ### b. Visualize the data
