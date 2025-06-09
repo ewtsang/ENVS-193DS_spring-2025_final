@@ -7,28 +7,28 @@ format:
     toc: true
     toc_float: true
 ---
-# Part 1. Set up tasks
+#Set up tasks
 
-### Link to GitHub Repository: <https://github.com/ewtsang/ENVS-193DS_homework-03.git>
-*change*
+## Link to GitHub Repository: <https://github.com/ewtsang/ENVS-193DS_spring-2025_final>
 
 ## Packages and Data:
 
 ```{r setup, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 #loading in libraries
-library(tidyverse)
-library(here)
+library(tidyverse) #general use
+library(here) #organization
 library(gt)
-library(janitor)
-library(readxl)
-library(dplyr)
-library(ggplot2)
-library(magick)
+library(janitor) #cleaning data frames
+library(readxl) #reading excel sheets
+library(dplyr) #
+library(ggplot2) #creating figures
+library(magick) 
 library(DHARMa)
-library(MuMIn) #multi
+library(MuMIn) #model selection
 ```
 
-```{r}
+```{r reading-data}
 #read in SB LTER data for this assignment (problem 2)
 sst <-read.csv(here("data", "SST_update2023.csv"))
 
@@ -39,22 +39,25 @@ sp_data <-read.csv(here("data", "occdist.csv"))
 ## Problem 1. Research Writing
 
 ### a. Transparent statistical methods
-In part one, the coworker used a correlation test *pearson's?* to assess the relationship between distance fromheadwater and annual total nitrogen load.
+In part one, the coworker used a correlation test to assess that there is no relationship between distance from headwater (km) and annual total nitrogen load (kg year-1)
 
-In part two, the coworker used a one-way ANOVA test to see whether average nitrogen load differs across multiple source types (urban land, atmospheric deposition, fertilizer, waste water treatment, and grasslands)
+In part two, the coworker used a one-way ANOVA test to see whether average nitrogen load differs across multiple source types (urban land, atmospheric deposition, fertilizer, wastewater treatment, and grasslands)
 
 ### b. More information needed
 What should also be included are (1) Effect size/dist for both analyses. For example, in part 1, was correlation positive? negative? how strong was it? A p-value by itself did not indicate the strength or nature of the relationship. (2) Post-hoc comparison for part 2 is needed. Since there are multiple nitrogen sources, a significant ANOVA should be followed by pairwise comparisons *tukey hsd* to determine difference in sources. This would give better context for interpretation of which alnd uses are contributing the most to nitrogen.
 
 ### c. Suggestions for rewriting
 *add more here later* 
+Sites father from the river headwaters were associated with higher total annual nitrogen loads. We rejected the null hypotheses that there is no correlation between distance from headwater (km) and annual total nitrogen load (kg year-1). Using Pearson's correlation, r = correlation coefficient, p = 0.03, a = 0.05
+
+Nitrogen load varied significantly across different source types, indicating there is a key driver of elevated nitrogen levels to the system. We reject the null hypotheses that there is no difference in average nitrogen load between sources (urban land, atmospheric deposition, fertilizer, wastewater treatment, and grasslands) Using one way ANOVA, f=test statistic, df = degrees of freedom, p = 0.02, a = 0.05).A follow p post-hoc Tukey's HSD test determined that ___ source (mean difference = average kg/year, p = p value) had significantly higher nitrogen loads than ___source (mean difference = average kg/year, p = p-value) no significant differences were found between other sources.
 
 ## Problem 2. Data visualization
 
 "This data package contains sea surface temperature (SST) data in the Santa Barbara Channel area. Data was obtained from the NOAA National Centers for Environmental Information (NCEI) at 0.25° resolution for the time between 1982 and 2023. This Daily Optimum Interpolation Sea Surface Temperature (OISST) Analysis (Version 2.1) derived its data from satellite (Advanced Very High Resolution Radiometer (AVHRR)) and in situ platforms (i.e., ships and buoys) and yielded 18 gird points within the Santa Barbara Channel."
 
 ### a. Cleaning and summarizing
-```{r}
+```{r data-cleaning}
 #create object called sst_clean from sst
 sst_clean <- sst |> 
   mutate(date = ymd(date),
@@ -76,7 +79,7 @@ str(sst_clean)
 ```
 
 ### b. Visualize the data
-```{r}
+```{r sst-visualization}
 ggplot(data = sst_clean, #making visualization using cleaned sst data 
         aes(x = month, y = mean_monthly_sst, color = year, group = year)) +
   scale_color_manual(
@@ -107,7 +110,7 @@ labs(title = "Mean monthly surface temperature (C°) by year, 2018 to 2023",
 Working with the nest box occupancy dataset from Stojanovic, D., Owens, G., Young, C.M., Alves, F. and Heinsohn, R. 2021. “Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird.” Restoration Ecology. DOI: 10.1111/rec.13319
 
 ### a. Response variable
-In this dataset, a 1 marks nest box occupancy for either Swift Parrot, Common Starling, Tree Martins, or if the the nest box was empty. A 0 indicates *fill here*
+In this dataset, a 1 or 0 marks nest box occupancy for the columns of either Swift Parrot, Common Starling, Tree Martins, or if the the nest box was empty. A 1 indicates occupancy and 0 indicates vacancy.
 
 ### b. Purpose of study
 The study investigates how nest box occupancy by Swift Parrots and competing species (Tree Martins and Common Starlings) is influenced by distance from the forest edge and time since deployment. The researchers aim to evaluate whether permanent nest boxes benefit the endangered Swift Parrot or unintentionally support competitors.
@@ -116,7 +119,15 @@ The study investigates how nest box occupancy by Swift Parrots and competing spe
 In 2016, the nest boxes were newly deployed, while in 2019 they were established and had been in place for 3 years. The years represent different breeding seasons and help assess changes in box occupancy over time.
 
 ### d. Table of models
-*add model here* 
+
+4 models total:
+
+| Model number | Edge Distance | Season          | Description                 |  
+|:------------:|:-------------:|:---------------:|:----------------------------|  
+| 0            |               |                 | no predictors (null model)  |
+| 1            |       X       |                 | edge distance aspredictor   | 
+| 2            |               |       X         | season as predictor         |   
+| 3            |       X       |       X         | all predictors (full model) |    
 
 ### e. Run the models
 
@@ -126,6 +137,22 @@ In 2016, the nest boxes were newly deployed, while in 2019 they were established
 
 ### g. Select the best model
 
+```{r model-fitting}
+sp_data_clean <- clean_names(sp_data) |> 
+  filter(box_occupant == "swift parrot")
+
+model10 <- lm(sp ~ 1, data = sp_data_clean) #nopredictors
+
+model11 <- lm(sp ~ edge_distance, data = sp_data_clean) #edge distance
+
+mode12<- lm(sp ~ season, data = sp_data_clean) #season
+
+mode13 <- lm(sp ~ edge_distance+  season, data = sp_data_clean) #both predictors
+
+AICc(model10, model11, mode12, mode13) |> 
+  arrange(AICc)
+
+```
 
 ### h. Visualize the model preductions
 
