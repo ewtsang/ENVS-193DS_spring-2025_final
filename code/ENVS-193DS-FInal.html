@@ -169,7 +169,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magick)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magick)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DHARMa)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MuMIn) <span class="co">#multi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#read in SB LTER data for this assignment (problem 2)</span></span>
@@ -214,11 +216,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># A tibble: 5 × 3
   year  month mean_monthly_sst
   &lt;fct&gt; &lt;ord&gt;            &lt;dbl&gt;
-1 2021  Nov               15.8
-2 2022  Jun               16.2
-3 2019  Dec               15  
-4 2020  Jan               14.6
-5 2019  Sep               18.8</code></pre>
+1 2018  Jan               15  
+2 2020  Sep               18.7
+3 2019  Aug               17  
+4 2023  Dec               16.1
+5 2022  Jun               16.2</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#structure from sst_clean</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(sst_clean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -276,15 +278,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Working with the nest box occupancy dataset from Stojanovic, D., Owens, G., Young, C.M., Alves, F. and Heinsohn, R. 2021. “Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird.” Restoration Ecology. DOI: 10.1111/rec.13319</p>
 <section id="a.-response-variable" class="level3">
 <h3 class="anchored" data-anchor-id="a.-response-variable">a. Response variable</h3>
+<p>In this dataset, a 1 marks nest box occupancy for either Swift Parrot, Common Starling, Tree Martins, or if the the nest box was empty. A 0 indicates <em>fill here</em></p>
 </section>
 <section id="b.-purpose-of-study" class="level3">
 <h3 class="anchored" data-anchor-id="b.-purpose-of-study">b. Purpose of study</h3>
+<p>The study investigates how nest box occupancy by Swift Parrots and competing species (Tree Martins and Common Starlings) is influenced by distance from the forest edge and time since deployment. The researchers aim to evaluate whether permanent nest boxes benefit the endangered Swift Parrot or unintentionally support competitors.</p>
 </section>
 <section id="c.-difference-in-seasons" class="level3">
 <h3 class="anchored" data-anchor-id="c.-difference-in-seasons">c.&nbsp;Difference in “seasons”</h3>
+<p>In 2016, the nest boxes were newly deployed, while in 2019 they were established and had been in place for 3 years. The years represent different breeding seasons and help assess changes in box occupancy over time.</p>
 </section>
 <section id="d.-table-of-models" class="level3">
 <h3 class="anchored" data-anchor-id="d.-table-of-models">d.&nbsp;Table of models</h3>
+<p><em>add model here</em></p>
 </section>
 <section id="e.-run-the-models" class="level3">
 <h3 class="anchored" data-anchor-id="e.-run-the-models">e. Run the models</h3>
@@ -306,10 +312,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="k.-interpret-your-results" class="level3">
 <h3 class="anchored" data-anchor-id="k.-interpret-your-results">k. Interpret your results</h3>
+<p>Swift Parrots were less likely to use boxes farther from forest edge. Occupancy probability was higher in 2016 (new boxes) than 2019. Likely because permanent boxes were learned and overtaken by competitors (esp.&nbsp;starlings). Management should prioritize temporary or seasonally-sealed box</p>
 </section>
 </section>
 <section id="problem-4.-affective-and-exploratory-visualizations" class="level2">
 <h2 class="anchored" data-anchor-id="problem-4.-affective-and-exploratory-visualizations">Problem 4. Affective and exploratory visualizations</h2>
+<p>Homework 3 Sketch</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>image<span class="ot">&lt;-</span> <span class="fu">image_read</span>(<span class="st">"/Users/ewtsa/Documents/ENVS-193DS/GitHub/ENVS-193DS_homework-03/HW3Paper.jpg"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>grid<span class="sc">::</span><span class="fu">grid.raster</span>(image)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ENVS-193DS-FInal_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Homework 3 Draft</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>image<span class="ot">&lt;-</span> <span class="fu">image_read</span>(<span class="st">"/Users/ewtsa/Documents/ENVS-193DS/GitHub/ENVS-193DS_homework-03/HW3Draft.jpg"</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>grid<span class="sc">::</span><span class="fu">grid.raster</span>(image)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ENVS-193DS-FInal_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 <section id="a.-comparing-visualizations" class="level3">
 <h3 class="anchored" data-anchor-id="a.-comparing-visualizations">a. Comparing visualizations</h3>
 </section>

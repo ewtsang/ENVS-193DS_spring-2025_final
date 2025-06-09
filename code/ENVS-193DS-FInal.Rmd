@@ -24,20 +24,30 @@ library(readxl)
 library(dplyr)
 library(ggplot2)
 library(magick)
+library(DHARMa)
+library(MuMIn) #multi
 ```
 
 ```{r}
 #read in SB LTER data for this assignment (problem 2)
 sst <-read.csv(here("data", "SST_update2023.csv"))
+
+#read in Swift Parrot data for this assignment (problem 3)
+sp_data <-read.csv(here("data", "occdist.csv"))
 ```
 
 ## Problem 1. Research Writing
 
 ### a. Transparent statistical methods
+In part one, the coworker used a correlation test *pearson's?* to assess the relationship between distance fromheadwater and annual total nitrogen load.
+
+In part two, the coworker used a one-way ANOVA test to see whether average nitrogen load differs across multiple source types (urban land, atmospheric deposition, fertilizer, waste water treatment, and grasslands)
 
 ### b. More information needed
+What should also be included are (1) Effect size/dist for both analyses. For example, in part 1, was correlation positive? negative? how strong was it? A p-value by itself did not indicate the strength or nature of the relationship. (2) Post-hoc comparison for part 2 is needed. Since there are multiple nitrogen sources, a significant ANOVA should be followed by pairwise comparisons *tukey hsd* to determine difference in sources. This would give better context for interpretation of which alnd uses are contributing the most to nitrogen.
 
 ### c. Suggestions for rewriting
+*add more here later* 
 
 ## Problem 2. Data visualization
 
@@ -97,31 +107,64 @@ labs(title = "Mean monthly surface temperature (C°) by year, 2018 to 2023",
 Working with the nest box occupancy dataset from Stojanovic, D., Owens, G., Young, C.M., Alves, F. and Heinsohn, R. 2021. “Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird.” Restoration Ecology. DOI: 10.1111/rec.13319
 
 ### a. Response variable
+In this dataset, a 1 marks nest box occupancy for either Swift Parrot, Common Starling, Tree Martins, or if the the nest box was empty. A 0 indicates *fill here*
 
 ### b. Purpose of study
+The study investigates how nest box occupancy by Swift Parrots and competing species (Tree Martins and Common Starlings) is influenced by distance from the forest edge and time since deployment. The researchers aim to evaluate whether permanent nest boxes benefit the endangered Swift Parrot or unintentionally support competitors.
 
 ### c. Difference in "seasons"
+In 2016, the nest boxes were newly deployed, while in 2019 they were established and had been in place for 3 years. The years represent different breeding seasons and help assess changes in box occupancy over time.
 
 ### d. Table of models
+*add model here* 
 
 ### e. Run the models
+
 
 ### f. Check the diagnostics
 
 
 ### g. Select the best model
 
+
 ### h. Visualize the model preductions
+
 
 ### i. Write a caption for your figure
 
 
 ### j. Calculate model predictions
 
+
 ### k. Interpret your results
+Swift Parrots were less likely to use boxes farther from forest edge.
+Occupancy probability was higher in 2016 (new boxes) than 2019.
+Likely because permanent boxes were learned and overtaken by competitors (esp. starlings).
+Management should prioritize temporary or seasonally-sealed box
 
 ## Problem 4. Affective and exploratory visualizations
 
+Homework 3 Sketch
+```{r}
+image<- image_read("/Users/ewtsa/Documents/ENVS-193DS/GitHub/ENVS-193DS_homework-03/HW3Paper.jpg")
+grid::grid.raster(image)
+```
+
+Homework 3 Draft
+```{r}
+image<- image_read("/Users/ewtsa/Documents/ENVS-193DS/GitHub/ENVS-193DS_homework-03/HW3Draft.jpg")
+grid::grid.raster(image)
+```
+
+Final Rendition
+
+```{r}
+image<- image_read("/Users/ewtsa/Documents/ENVS-193DS/GitHub/ENVS-193DS_homework-03/HW3Draft.jpg")
+grid::grid.raster(image)
+```
+
 ### a. Comparing visualizations
 
+
 ### b. Sharing you affective visualization
+
