@@ -48,13 +48,17 @@ sst <-read.csv(here("data", "SST_update2023.csv"))
 #create object called sst_clean from sst
 sst_clean <- sst |> 
   mutate(date = ymd(date),
-         year = year(date), #converting to date
+         year = year(date), #converting to date, making sure in numeric values
          month = month(date, label = TRUE)) |> #abbreviated month "Jan", "Feb", etc.
-  filter(year %in% 2018:2023) |> #only use data from 2018 to 2023
-  group_by(year, month) |> 
-  summarize(mean_monthly_sst = mean(temp, na.rm = TRUE), .groups = "drop")
+  filter(year %in% c("2018", "2019", "2020", "2021", "2022", "2023")) |> #only use data from 2018 to 2023
+  mutate(month = factor(month, levels = month.abb, ordered = TRUE)) |>  #ensure month is an ordered factor (Jan to Dec)
 #need a data frame with abbreviated month, year, and mean_monthly_sst
+  group_by(year, month) |> 
+  summarize(mean_monthly_sst = round(mean(temp, na.rm = TRUE), 1), .groups = "drop")
+#round temperatures to one decimal point
+#drop duplicates
 
+sst_clean$year <- factor(sst_clean$year, levels = c("2018", "2019", "2020", "2021", "2022", "2023"))
 #display 5 rows from sst_clean
 slice_sample(sst_clean, n = 5)
 #structure from sst_clean
@@ -62,8 +66,35 @@ str(sst_clean)
 ```
 
 ### b. Visualize the data
+```{r}
+ggplot(data = sst_clean, #making visualization using cleaned sst data 
+        aes(x = month, y = mean_monthly_sst, color = year, group = year)) +
+  scale_color_manual(
+    values = colorRampPalette(c("lightblue","darkblue"))(6)
+  ) +
+  geom_line(
+    aes(group = year)) +
+  geom_point(
+    aes(), 
+  #each individual point is sorted by year 
+     size = 2) +
+  #labeling the title and axis of the plot
+labs(title = "Mean monthly surface temperature (C°) by year, 2018 to 2023",
+       x = "Month",
+       y = "Mean monthly sea surface temperature(C°)") +
+  theme_minimal() +
+  theme(
+    panel.grid = element_blank(),
+    panel.border = element_rect(color = "black", fill = NA), #adding a panel border
+    axis.line = element_line(color = "black"),
+    axis.ticks = element_line(color = "black"), #adding axis ticks
+    legend.position = c(0.2, 0.8),
+  )  #remove background gridlines and legend box
+```
+
 
 ## Problem 3. Data analysis
+Working with the nest box occupancy dataset from Stojanovic, D., Owens, G., Young, C.M., Alves, F. and Heinsohn, R. 2021. “Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird.” Restoration Ecology. DOI: 10.1111/rec.13319
 
 ### a. Response variable
 
