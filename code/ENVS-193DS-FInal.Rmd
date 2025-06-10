@@ -7,7 +7,7 @@ format:
     toc: true
     toc_float: true
 ---
-#Set up tasks
+# Set up tasks
 Link to GitHub Repository: <https://github.com/ewtsang/ENVS-193DS_spring-2025_final>
 
 ## Packages and Data:
@@ -55,62 +55,65 @@ Nitrogen load varied significantly across different source types, indicating the
 "This data package contains sea surface temperature (SST) data in the Santa Barbara Channel area. Data was obtained from the NOAA National Centers for Environmental Information (NCEI) at 0.25° resolution for the time between 1982 and 2023. This Daily Optimum Interpolation Sea Surface Temperature (OISST) Analysis (Version 2.1) derived its data from satellite (Advanced Very High Resolution Radiometer (AVHRR)) and in situ platforms (i.e., ships and buoys) and yielded 18 gird points within the Santa Barbara Channel."
 
 ### a. Cleaning and summarizing
-```{r data-cleaning}
+```{r 2a-data-cleaning}
 #create object called sst_clean from sst
 sst_clean <- sst |> 
-  mutate(date = ymd(date),
-         year = year(date), #converting to date, making sure in numeric values
-         month = month(date, label = TRUE)) |> #abbreviated month "Jan", "Feb", etc.
+  mutate(date = ymd(date), #convert the "date" column to "year/month/day" format
+         year = year(date), #converting to date, making sure it is in numeric values
+         month = month(date, label = TRUE)) |> #extract month as abbreviated "Jan", "Feb", etc.
   filter(year %in% c("2018", "2019", "2020", "2021", "2022", "2023")) |> #only use data from 2018 to 2023
   mutate(month = factor(month, levels = month.abb, ordered = TRUE)) |>  #ensure month is an ordered factor (Jan to Dec)
 #need a data frame with abbreviated month, year, and mean_monthly_sst
-  group_by(year, month) |> 
+  group_by(year, month) |> #group by year and month for summary statistics
   summarize(mean_monthly_sst = round(mean(temp, na.rm = TRUE), 1), .groups = "drop")
-#round temperatures to one decimal point
-#drop duplicates
+#calculate average temperature per group, rounding to one decimal point
+#drop grouping
 
 sst_clean$year <- factor(sst_clean$year, levels = c("2018", "2019", "2020", "2021", "2022", "2023"))
 #display 5 rows from sst_clean, in levels ("2018", "2019", "2020", "2021", "2022", and "2023"
+
 slice_sample(sst_clean, n = 5)
-#structure from sst_clean
+#randomly display 5 rows from cleaned dataset (sst_clean) to inspect output
+
 str(sst_clean)
+#show structure of the dataset (data type, variable, etc)
 ```
 
 ### b. Visualize the data
 *how to add20 tick to yaxis*
-```{r sst-visualization}
+```{r 2b-sst-visualization}
 ggplot(data = sst_clean, #making visualization using cleaned sst data 
         aes(x = month, y = mean_monthly_sst, color = year, group = year)) + 
   #setting the axis, comparing month (x axis) and mean monthly sea surface temperature (y axis)
   scale_color_manual(
     values = colorRampPalette(c("lightblue","darkblue"))(6)
   ) + 
-  #color gradient representing years
+  #set custom blue color gradient representing 6 years
   geom_line(
     aes(group = year)) + 
-  #group by
+  #adding lines grouped by year to show monthly trends 
   geom_point(
     aes(), 
-  #each individual point is sorted by year 
+  #adding individual data points to highlight each month's value
      size = 2) +
   #labeling the title and axis of the plot
 labs(title = "Mean monthly surface temperature (C°) by year, 2018 to 2023",
        x = "Month",
        y = "Mean monthly sea surface temperature(C°)") +
-  theme_minimal() +
+  theme_minimal() + #use a clean, minimal theme
   theme(
-    panel.grid = element_blank(),
-    panel.border = element_rect(color = "black", fill = NA), #adding a panel border
-    axis.line = element_line(color = "black"),
-    axis.ticks = element_line(color = "black"), #adding axis ticks
-    legend.position = c(0.2, 0.7),
-  )  #remove background gridlines and legend box
+    panel.grid = element_blank(), #remove background gridlines
+    panel.border = element_rect(color = "black", fill = NA), #adding a black plot panel border
+    axis.line = element_line(color = "black"), #add black axis lines
+    axis.ticks = element_line(color = "black"), #adding black axis ticks
+    legend.position = c(0.2, 0.7), #place legend inside plot at these coordinates
+  )
 ```
 
 
 ## Problem 3. Data analysis
 
-Working with the nest box occupancy dataset from Stojanovic, D., Owens, G., Young, C.M., Alves, F. and Heinsohn, R. 2021. “Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird.” Restoration Ecology. DOI: 10.1111/rec.13319
+*Working with the nest box occupancy dataset from Stojanovic, D., Owens, G., Young, C.M., Alves, F. and Heinsohn, R. 2021. “Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird.” Restoration Ecology. DOI: 10.1111/rec.13319*
 
 ### a. Response variable
 In this dataset, a 1 or 0 marks nest box occupancy for the columns of either Swift Parrot, Common Starling, Tree Martins, or if the the nest box was empty. A 1 indicates occupancy and 0 indicates vacancy.
@@ -131,88 +134,91 @@ In 2016, the nest boxes were newly deployed, while in 2019 they were established
 | 3            |       X       |       X         | all predictors (full model) |    
 
 ### e. Run the models
-```{r, results="hide"}
-sp_data_clean <- clean_names(sp_data)  
+```{r 3e-run-models, results="hide"}
+sp_data_clean <- clean_names(sp_data) #clean column names of the swift parrot data 
 
-model10 <- lm(sp ~ 1, data = sp_data_clean) #nopredictors
+model10 <- lm(sp ~ 1, data = sp_data_clean) #null model: predict occupancy (sp) using only intercept (no predictors)
 
-model11 <- lm(sp ~ edge_distance, data = sp_data_clean) #edge distance
+model11 <- lm(sp ~ edge_distance, data = sp_data_clean) #model 1: predict occupancy (sp) using forest edge distance
 
-model12<- lm(sp ~ season, data = sp_data_clean) #season
+model12<- lm(sp ~ season, data = sp_data_clean) #model 2: predict occupancy (sp) using season (year of deployment)
 
-model13 <- lm(sp ~ edge_distance+  season, data = sp_data_clean) #both predictors
+model13 <- lm(sp ~ edge_distance+  season, data = sp_data_clean) #model 3: predict occupancy (sp) using both distance and season additively 
 ```
 
 ### f. Check the diagnostics
 
 #### Model 0, Null model
-```{r}
-sim0 <- simulateResiduals(model10)
-par(mfrow = c(2,2))
-plot(sim0)
+```{r 3f-model0-diagnostics}
+sim0 <- simulateResiduals(model10) #simulate residuals from model10 using DHARMa
+par(mfrow = c(2,2)) #set up a 2 by 2 plot layout so that multiple diagnostic plots appear
+plot(sim0) #create standard DHARMa diagnostic plots: QQ, histogram, residual v predicted, etc.
 ```
 
 #### Model 1, Distance as predictor
-```{r}
-sim1 <- simulateResiduals(model11)
-par(mfrow = c(2,2))
-plot(sim1)
+```{r 3f-model1-diagnostics}
+sim1 <- simulateResiduals(model11) #simulate residuals from model11 using DHARMa
+par(mfrow = c(2,2)) #set up a 2 by 2 plot layout so that multiple diagnostic plots appear
+plot(sim1) #create standard DHARMa diagnostic plots: QQ, histogram, residual v predicted, etc.
 
 ```
 
 #### Model 2, Season as predictor
-```{r}
-sim2 <- simulateResiduals(model12)
-par(mfrow = c(2,2))
-plot(sim2)
-
+```{r 3f-model2-diagnostics}
+sim2 <- simulateResiduals(model12)  #simulate residuals from model12 using DHARMa
+par(mfrow = c(2,2)) #set up a 2 by 2 plot layout so that multiple diagnostic plots appear
+plot(sim2) #create standard DHARMa diagnostic plots: QQ, histogram, residual v predicted, etc.
 ```
 
 #### Model 3, Both season and distance as predictor
-```{r}
-sim3 <- simulateResiduals(model13)
-par(mfrow = c(2,2))
-plot(sim3)
-
+```{r 3f-model3-diagnostics}
+sim3 <- simulateResiduals(model13)  #simulate residuals from model13 using DHARMa
+par(mfrow = c(2,2))  #set up a 2 by 2 plot layout so that multiple diagnostic plots appear
+plot(sim3) #create standard DHARMa diagnostic plots: QQ, histogram, residual v predicted, etc.
 ```
 
 ### g. Select the best model
 ```{r model-fitting}
+#calculating and ordering models from best to worst to choose most supported model
 AICc(model10, model11, model12, model13) |> 
-  arrange(AICc)
+  arrange(AICc) 
 ```
 
 The best model to use would be **Model 3**. 
 
 ### h. Visualize the model predictions
 
-```{r}
-library(ggeffects)
-sp_data_clean <- sp_data_clean |>
+```{r model-predictions}
+#make sure "season" is treated as a categorical variable, not numeric for the plot
+sp_data_clean <- sp_data_clean |> 
   mutate(season = as.factor(season))
 
-# Generate predicted values for combinations of edge_distance and season
+#generate predicted values for combinations of edge_distance and season from the additive model 3
+#"preds"contains predicted values, confidence intervals, grouping info
 preds <- ggpredict(model13, terms = c("edge_distance [all]", "season"))
 
-# Plot with ribbons, predictions, and jittered observed data
+#plot with ribbons, predictions, and jittered observed data
 ggplot(preds, aes(x = x, y = predicted, color = as.factor(group), fill = as.factor(group))) +
-  geom_line(size = 1.2) +
-  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.2, color = NA) +
+  #setting the axis: x axis = edge distance values, y axis = predicted values, color/fill by group (seasons 2016 or 2019)
+  geom_line(size = 1.2) + #prediction lines
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.2, color = NA) + #adding 95% confidence interval ribbons
   geom_jitter(data = sp_data_clean, aes(x = edge_distance, y = sp, color = season), 
-              inherit.aes = FALSE, width = 20, height = 0.05, alpha = 0.3) +
+  #adding cleaned data, setting axis comparing edge distance (x axis) to swift parrot presence (y axis), coloring by season categories (2016 or 2019)
+              inherit.aes = FALSE, width = 20, height = 0.05, alpha = 0.3) + #jitter for visibility
+  #labeling title and axis of the plot
   labs(title = "Predicted Swift Parrot Nest Box Occupancy by Distance and Season",
        x = "Distance from Forest Edge (m)",
        y = "Probability of Swift Parrot Occupancy",
        color = "Season",
        fill = "Season") +
-  theme_minimal() +
-  theme(panel.grid = element_blank(),
-        panel.border = element_rect(color = "black", fill = NA),
-        axis.line = element_line(color = "black"),
-        axis.ticks = element_line(color = "black"),
-        legend.position = "right") +
-scale_color_manual(values = c("2016" = "orange", "2019" = "yellowgreen")) +
-  scale_fill_manual(values = c("2016" = "orange", "2019" = "yellowgreen")) 
+  theme_minimal() + #use a clean, minmal theme
+  theme(panel.grid = element_blank(), #remove background gridlines
+        panel.border = element_rect(color = "black", fill = NA), #adding a black plot panel border
+        axis.line = element_line(color = "black"), #adding a black axis line
+        axis.ticks = element_line(color = "black"), #adding black axis ticks
+        legend.position = "right") + #setting legend position
+scale_color_manual(values = c("2016" = "orange", "2019" = "yellowgreen")) + 
+  scale_fill_manual(values = c("2016" = "orange", "2019" = "yellowgreen")) #sing visually distinct non-default colors for each season to improve visual clarity
 
 ```
 
@@ -221,8 +227,8 @@ scale_color_manual(values = c("2016" = "orange", "2019" = "yellowgreen")) +
 
 ### j. Calculate model predictions
 ```{r}
-pred <- ggpredict(model13, terms = c("edge_distance [0, 9000]", "season"))
-print(pred)
+pred <- ggpredict(model13, terms = c("edge_distance [0, 9000]", "season")) #calculate model predictions at 0m and 9000m from forest edge for both seasons
+print(pred) #display tableof predictions
 ```
 
 ### k. Interpret your results
