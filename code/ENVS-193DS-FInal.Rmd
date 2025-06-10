@@ -8,8 +8,7 @@ format:
     toc_float: true
 ---
 #Set up tasks
-
-## Link to GitHub Repository: <https://github.com/ewtsang/ENVS-193DS_spring-2025_final>
+Link to GitHub Repository: <https://github.com/ewtsang/ENVS-193DS_spring-2025_final>
 
 ## Packages and Data:
 
