@@ -81,9 +81,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#set-up-tasks" id="toc-set-up-tasks" class="nav-link active" data-scroll-target="#set-up-tasks">Set up tasks</a>
-  <ul class="collapse">
-  <li><a href="#packages-and-data" id="toc-packages-and-data" class="nav-link" data-scroll-target="#packages-and-data">Packages and Data:</a></li>
+  <li><a href="#packages-and-data" id="toc-packages-and-data" class="nav-link active" data-scroll-target="#packages-and-data">Packages and Data:</a></li>
   <li><a href="#problem-1.-research-writing" id="toc-problem-1.-research-writing" class="nav-link" data-scroll-target="#problem-1.-research-writing">Problem 1. Research Writing</a>
   <ul class="collapse">
   <li><a href="#a.-transparent-statistical-methods" id="toc-a.-transparent-statistical-methods" class="nav-link" data-scroll-target="#a.-transparent-statistical-methods">a. Transparent statistical methods</a></li>
@@ -113,7 +111,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#a.-comparing-visualizations" id="toc-a.-comparing-visualizations" class="nav-link" data-scroll-target="#a.-comparing-visualizations">a. Comparing visualizations</a></li>
   <li><a href="#b.-sharing-you-affective-visualization" id="toc-b.-sharing-you-affective-visualization" class="nav-link" data-scroll-target="#b.-sharing-you-affective-visualization">b. Sharing you affective visualization</a></li>
-  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -151,8 +148,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="set-up-tasks" class="level1">
-<h1>Set up tasks</h1>
 <p>Link to GitHub Repository: <a href="https://github.com/ewtsang/ENVS-193DS_spring-2025_final" class="uri">https://github.com/ewtsang/ENVS-193DS_spring-2025_final</a></p>
 <section id="packages-and-data" class="level2">
 <h2 class="anchored" data-anchor-id="packages-and-data">Packages and Data:</h2>
@@ -191,13 +186,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="c.-suggestions-for-rewriting" class="level3">
 <h3 class="anchored" data-anchor-id="c.-suggestions-for-rewriting">c.&nbsp;Suggestions for rewriting</h3>
-<p>Sites father from the river headwaters were associated with higher total annual nitrogen loads. We rejected the null hypotheses that there is no correlation between distance from headwater (km) and annual total nitrogen load (kg year-1). Using Pearson’s correlation, r = correlation coefficient, p = 0.03, a = 0.05</p>
+<p><em>revisit this problem——————————-</em> Sites father from the river headwaters were associated with higher total annual nitrogen loads. We rejected the null hypotheses that there is no correlation between distance from headwater (km) and annual total nitrogen load (kg year-1). Using Pearson’s correlation, r = correlation coefficient, p = 0.03, a = 0.05</p>
 <p>Nitrogen load varied significantly across different source types, indicating there is a key driver of elevated nitrogen levels to the system. We reject the null hypotheses that there is no difference in average nitrogen load between sources (urban land, atmospheric deposition, fertilizer, wastewater treatment, and grasslands) Using one way ANOVA, f=test statistic, df = degrees of freedom, p = 0.02, a = 0.05).A follow p post-hoc Tukey’s HSD test determined that ___ source (mean difference = average kg/year, p = p value) had significantly higher nitrogen loads than ___source (mean difference = average kg/year, p = p-value) no significant differences were found between other sources.</p>
 </section>
 </section>
 <section id="problem-2.-data-visualization" class="level2">
 <h2 class="anchored" data-anchor-id="problem-2.-data-visualization">Problem 2. Data visualization</h2>
-<p>“This data package contains sea surface temperature (SST) data in the Santa Barbara Channel area. Data was obtained from the NOAA National Centers for Environmental Information (NCEI) at 0.25° resolution for the time between 1982 and 2023. This Daily Optimum Interpolation Sea Surface Temperature (OISST) Analysis (Version 2.1) derived its data from satellite (Advanced Very High Resolution Radiometer (AVHRR)) and in situ platforms (i.e., ships and buoys) and yielded 18 gird points within the Santa Barbara Channel.”</p>
+<p>Using data from the Santa Barbara Coastal LTER on sea surface temperature in the Santa Barbara Channel area</p>
+<p><em>” Data was obtained from the NOAA National Centers for Environmental Information (NCEI) at 0.25° resolution for the time between 1982 and 2023. This Daily Optimum Interpolation Sea Surface Temperature (OISST) Analysis (Version 2.1) derived its data from satellite (Advanced Very High Resolution Radiometer (AVHRR)) and in situ platforms (i.e., ships and buoys) and yielded 18 gird points within the Santa Barbara Channel.”</em></p>
 <section id="a.-cleaning-and-summarizing" class="level3">
 <h3 class="anchored" data-anchor-id="a.-cleaning-and-summarizing">a. Cleaning and summarizing</h3>
 <div class="cell">
@@ -222,11 +218,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># A tibble: 5 × 3
   year  month mean_monthly_sst
   &lt;fct&gt; &lt;ord&gt;            &lt;dbl&gt;
-1 2021  Nov               15.8
-2 2019  Feb               14.1
-3 2020  Jun               15.9
-4 2023  Jan               14  
-5 2021  May               14.4</code></pre>
+1 2023  Jul               16.3
+2 2022  Aug               17.5
+3 2023  May               14.3
+4 2022  Sep               19.3
+5 2021  Jan               13.9</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#randomly display 5 rows from cleaned dataset (sst_clean) to inspect output</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -242,7 +238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="b.-visualize-the-data" class="level3">
 <h3 class="anchored" data-anchor-id="b.-visualize-the-data">b. Visualize the data</h3>
-<p><em>how to add20 tick to yaxis</em></p>
+<p><em>how to add20 tick to yaxis—————————</em></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> sst_clean, <span class="co">#making visualization using cleaned sst data </span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>        <span class="fu">aes</span>(<span class="at">x =</span> month, <span class="at">y =</span> mean_monthly_sst, <span class="at">color =</span> year, <span class="at">group =</span> year)) <span class="sc">+</span> </span>
@@ -282,7 +278,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="problem-3.-data-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="problem-3.-data-analysis">Problem 3. Data analysis</h2>
-<p><em>Working with the nest box occupancy dataset from Stojanovic, D., Owens, G., Young, C.M., Alves, F. and Heinsohn, R. 2021. “Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird.” Restoration Ecology. DOI: 10.1111/rec.13319</em></p>
+<p><em>Working with the nest box occupancy dataset from Stojanovic, D., Owens, G., Young, C.M., Alves, F. and Heinsohn, R. 2021. “Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird.” Restoration Ecology.</em> DOI: <a href="https://datadryad.org/dataset/doi:10.5061/dryad.83bk3j9sb">10.1111/rec.13319</a></p>
+<p>Answering the following research questions: 1. How do year (2016 or 2019) and distance from forest edge predict Swift Parrot (<em>Lathamus discolor</em>) nest box occupancy? 2. Is there a simpler model that explains Swift Parrot nest box occupancy, and if so, what is it?</p>
 <section id="a.-response-variable" class="level3">
 <h3 class="anchored" data-anchor-id="a.-response-variable">a. Response variable</h3>
 <p>In this dataset, a 1 or 0 marks nest box occupancy for the columns of either Swift Parrot, Common Starling, Tree Martins, or if the the nest box was empty. A 1 indicates occupancy and 0 indicates vacancy.</p>
@@ -317,25 +314,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: center;">0</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
-<td style="text-align: left;">no predictors (null model)</td>
+<td style="text-align: left;">No predictors (null model)</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">1</td>
 <td style="text-align: center;">X</td>
 <td style="text-align: center;"></td>
-<td style="text-align: left;">edge distance aspredictor</td>
+<td style="text-align: left;">Edge distance as predictor</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">2</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;">X</td>
-<td style="text-align: left;">season as predictor</td>
+<td style="text-align: left;">Season as predictor</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">3</td>
 <td style="text-align: center;">X</td>
 <td style="text-align: center;">X</td>
-<td style="text-align: left;">all predictors (full model)</td>
+<td style="text-align: left;">All predictors (full model)</td>
 </tr>
 </tbody>
 </table>
@@ -477,7 +474,7 @@ model10  2 245.0324</code></pre>
 </section>
 <section id="i.-write-a-caption-for-your-figure" class="level3">
 <h3 class="anchored" data-anchor-id="i.-write-a-caption-for-your-figure">i. Write a caption for your figure</h3>
-<p><em>Figure 1.</em> Predicted probability of Swift Parrot nest box occupancy based on distance from forest edge and on season (2016 vs.&nbsp;2019). Lines represent model predictions from the all predictors model (occupancy ~ edge_distance + season), and shaded areas are 95% confidence intervals. Points represent raw occupancy data, jittered for visibility. Data source: Stojanovic, Dejan et al.&nbsp;(2021). Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird [Dataset]. Dryad. https://doi.org/10.5061/dryad.83bk3j9sb</p>
+<p><strong>Figure 1.</strong> Predicted probability of Swift Parrot nest box occupancy based on distance from forest edge and on season (2016 vs.&nbsp;2019). Lines represent model predictions from the all predictors model (occupancy ~ edge_distance + season), and shaded areas are 95% confidence intervals. Points represent raw occupancy data, jittered for visibility. <strong>Data source:</strong> <em>Stojanovic, Dejan et al.&nbsp;(2021). Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird [Dataset]. Dryad.</em> <a href="https://doi.org/10.5061/dryad.83bk3j9sb%5D">https://doi.org/10.5061/dryad.83bk3j9sb</a></p>
 </section>
 <section id="j.-calculate-model-predictions" class="level3">
 <h3 class="anchored" data-anchor-id="j.-calculate-model-predictions">j. Calculate model predictions</h3>
@@ -505,7 +502,7 @@ edge_distance | Predicted |       95% CI
 </section>
 <section id="k.-interpret-your-results" class="level3">
 <h3 class="anchored" data-anchor-id="k.-interpret-your-results">k. Interpret your results</h3>
-<p>Swift Parrots were less likely to use boxes farther from forest edge. Occupancy probability was higher in 2016 (new boxes) than 2019. Likely because permanent boxes were learned and overtaken by competitors (esp.&nbsp;starlings). Management should prioritize temporary or seasonally-sealed box</p>
+<p>Swift Parrots were less likely to use boxes farther from forest edge. Occupancy probability was higher in 2016 (new boxes) than 2019. This is likely because permanent boxes were learned and overtaken by competitors (esp.&nbsp;Common Starlings). Future management should prioritize temporary or seasonally-sealed boxes. <em>———To understand the biology behind the trends you found, you need to read the paper and look at the figures. For which species do you see the opposite relationship between distance to forest edge and probability of occupancy?————–</em></p>
 </section>
 </section>
 <section id="problem-4.-affective-and-exploratory-visualizations" class="level2">
@@ -548,10 +545,15 @@ edge_distance | Predicted |       95% CI
 </div>
 <section id="a.-comparing-visualizations" class="level3">
 <h3 class="anchored" data-anchor-id="a.-comparing-visualizations">a. Comparing visualizations</h3>
+<p>Compared to the exploratory visualizations made for Homework 2, visualizations made for Homework 3 were had more complexity in data represented, as well as in visual aesthetic. In Homework 2, we were prompted to create simple visualizations through <em>ggplot</em> representing categorical and continuous predictor variables. For Homework 3, we were tasked with translating our personal data into an “affective” visualization learned from lecture – this I decided to represent in a digital painting.</p>
+<p>Some similarities I noticed between was using a box plot to represent the data. Although I tweaked how this was shown in my illustrative affective visualization, I kept individual data points on both of the the visualizations.</p>
+<p><em>What patterns (e.g.&nbsp;differences in means/counts/proportions/medians, trends through time, relationships between variables) do you see in each visualization? Are these different between visualizations? If so, why? If not, why not?—————————————————————-</em></p>
+<p>I got constructive feedback on my drafts for my affective visualization thanks to my classmates, that emotional aspect was well represented, but it was more difficult at a first glance to tell what the data was showing. To change this, I added some clearer labels to my axis and made it so that the stem length represented my data points (call length in minutes). This way, it would be clearer upon the viewer that they were looking at data. <em>————circle back on this later—————-</em></p>
 </section>
 <section id="b.-sharing-you-affective-visualization" class="level3">
 <h3 class="anchored" data-anchor-id="b.-sharing-you-affective-visualization">b. Sharing you affective visualization</h3>
-</section>
+<p><strong>My final visualization of <em>Family Call Length vs Week of Spring Quarter</em> </strong></p>
+<p><strong>Desc.</strong> <em>How my emotional and academic state affects my communication with family, centering the personal, emotional rhythms of time, and relationships over a statistical background. The artwork shows the distribution of phone call duration from Week 1 to Week 10 of Spring Quarter. The median call length generally decreases from the beginning (Weeks 1-5) to the end (Weeks 6-10), which supports the initial hypothesis that call duration become shorter as academic demands increase over time.</em></p>
 </section>
 </section>
 

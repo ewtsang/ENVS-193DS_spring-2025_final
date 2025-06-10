@@ -8,9 +8,13 @@ format:
     toc_float: true
 ---
 
+
+
 Link to GitHub Repository: <https://github.com/ewtsang/ENVS-193DS_spring-2025_final>
 
 ## Packages and Data:
+
+
 
 ```{r setup, message=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
@@ -35,6 +39,8 @@ sst <-read.csv(here("data", "SST_update2023.csv"))
 sp_data <-read.csv(here("data", "occdist.csv"))
 ```
 
+
+
 ## Problem 1. Research Writing
 
 ### a. Transparent statistical methods
@@ -57,6 +63,8 @@ Using data from the Santa Barbara Coastal LTER on sea surface temperature in the
 *" Data was obtained from the NOAA National Centers for Environmental Information (NCEI) at 0.25° resolution for the time between 1982 and 2023. This Daily Optimum Interpolation Sea Surface Temperature (OISST) Analysis (Version 2.1) derived its data from satellite (Advanced Very High Resolution Radiometer (AVHRR)) and in situ platforms (i.e., ships and buoys) and yielded 18 gird points within the Santa Barbara Channel."*
 
 ### a. Cleaning and summarizing
+
+
 ```{r 2a-data-cleaning}
 #create object called sst_clean from sst
 sst_clean <- sst |> 
@@ -81,8 +89,12 @@ str(sst_clean)
 #show structure of the dataset (data type, variable, etc)
 ```
 
+
+
 ### b. Visualize the data
 *how to add20 tick to yaxis---------------------------*
+
+
 ```{r 2b-sst-visualization}
 ggplot(data = sst_clean, #making visualization using cleaned sst data 
         aes(x = month, y = mean_monthly_sst, color = year, group = year)) + 
@@ -113,6 +125,8 @@ labs(title = "Mean monthly surface temperature (C°) by year, 2018 to 2023",
 ```
 
 
+
+
 ## Problem 3. Data analysis
 *Working with the nest box occupancy dataset from Stojanovic, D., Owens, G., Young, C.M., Alves, F. and Heinsohn, R. 2021. “Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird.” Restoration Ecology.* DOI: [10.1111/rec.13319](https://datadryad.org/dataset/doi:10.5061/dryad.83bk3j9sb)
 
@@ -139,6 +153,8 @@ In 2016, the nest boxes were newly deployed, while in 2019 they were established
 | 3            |       X       |       X         | All predictors (full model) |    
 
 ### e. Run the models
+
+
 ```{r 3e-run-models, results="hide"}
 sp_data_clean <- clean_names(sp_data) #clean column names of the swift parrot data 
 
@@ -151,16 +167,24 @@ model12<- lm(sp ~ season, data = sp_data_clean) #model 2: predict occupancy (sp)
 model13 <- lm(sp ~ edge_distance+  season, data = sp_data_clean) #model 3: predict occupancy (sp) using both distance and season additively 
 ```
 
+
+
 ### f. Check the diagnostics
 
 #### Model 0, Null model
+
+
 ```{r 3f-model0-diagnostics}
 sim0 <- simulateResiduals(model10) #simulate residuals from model10 using DHARMa
 par(mfrow = c(2,2)) #set up a 2 by 2 plot layout so that multiple diagnostic plots appear
 plot(sim0) #create standard DHARMa diagnostic plots: QQ, histogram, residual v predicted, etc.
 ```
 
+
+
 #### Model 1, Distance as predictor
+
+
 ```{r 3f-model1-diagnostics}
 sim1 <- simulateResiduals(model11) #simulate residuals from model11 using DHARMa
 par(mfrow = c(2,2)) #set up a 2 by 2 plot layout so that multiple diagnostic plots appear
@@ -168,30 +192,46 @@ plot(sim1) #create standard DHARMa diagnostic plots: QQ, histogram, residual v p
 
 ```
 
+
+
 #### Model 2, Season as predictor
+
+
 ```{r 3f-model2-diagnostics}
 sim2 <- simulateResiduals(model12)  #simulate residuals from model12 using DHARMa
 par(mfrow = c(2,2)) #set up a 2 by 2 plot layout so that multiple diagnostic plots appear
 plot(sim2) #create standard DHARMa diagnostic plots: QQ, histogram, residual v predicted, etc.
 ```
 
+
+
 #### Model 3, Both season and distance as predictor
+
+
 ```{r 3f-model3-diagnostics}
 sim3 <- simulateResiduals(model13)  #simulate residuals from model13 using DHARMa
 par(mfrow = c(2,2))  #set up a 2 by 2 plot layout so that multiple diagnostic plots appear
 plot(sim3) #create standard DHARMa diagnostic plots: QQ, histogram, residual v predicted, etc.
 ```
 
+
+
 ### g. Select the best model
+
+
 ```{r model-fitting}
 #calculating and ordering models from best to worst to choose most supported model
 AICc(model10, model11, model12, model13) |> 
   arrange(AICc) 
 ```
 
+
+
 The best model to use would be **Model 3**. 
 
 ### h. Visualize the model predictions
+
+
 
 ```{r model-predictions}
 #make sure "season" is treated as a categorical variable, not numeric for the plot
@@ -227,14 +267,20 @@ scale_color_manual(values = c("2016" = "orange", "2019" = "yellowgreen")) +
 
 ```
 
+
+
 ### i. Write a caption for your figure
 **Figure 1.** Predicted probability of Swift Parrot nest box occupancy based on distance from forest edge and on season (2016 vs. 2019). Lines represent model predictions from the all predictors model (occupancy ~ edge_distance + season), and shaded areas are 95% confidence intervals. Points represent raw occupancy data, jittered for visibility. **Data source:** *Stojanovic, Dejan et al. (2021). Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird [Dataset]. Dryad.* [https://doi.org/10.5061/dryad.83bk3j9sb](https://doi.org/10.5061/dryad.83bk3j9sb]) 
 
 ### j. Calculate model predictions
+
+
 ```{r}
 pred <- ggpredict(model13, terms = c("edge_distance [0, 9000]", "season")) #calculate model predictions at 0m and 9000m from forest edge for both seasons
 print(pred) #display tableof predictions
 ```
+
+
 
 ### k. Interpret your results
 Swift Parrots were less likely to use boxes farther from forest edge. Occupancy probability was higher in 2016 (new boxes) than 2019. This is likely because permanent boxes were learned and overtaken by competitors (esp. Common Starlings). Future management should prioritize temporary or seasonally-sealed boxes.
@@ -257,21 +303,32 @@ I got constructive feedback on my drafts for my affective visualization thanks t
 
 Final Rendition
 
+
+
 ```{r}
 image<- image_read("/Users/ewtsa/Documents/ENVS-193DS/GitHub/ENVS-193DS_homework-03/HW3Draft.jpg")
 grid::grid.raster(image)
 ```
 
+
+
  **Desc.** *How my emotional and academic state affects my communication with family, centering the personal, emotional rhythms of time, and relationships over a statistical background. The artwork shows the distribution of phone call duration from Week 1 to Week 10 of Spring Quarter. The median call length generally decreases from the beginning (Weeks 1-5) to the end (Weeks 6-10), which supports the initial hypothesis that call duration become shorter as academic demands increase over time.*
 
 Homework 3 Sketch
+
+
 ```{r}
 image<- image_read("/Users/ewtsa/Documents/ENVS-193DS/GitHub/ENVS-193DS_homework-03/HW3Paper.jpg")
 grid::grid.raster(image)
 ```
 
+
+
 Homework 3 Draft
+
+
 ```{r}
 image<- image_read("/Users/ewtsa/Documents/ENVS-193DS/GitHub/ENVS-193DS_homework-03/HW3Draft.jpg")
 grid::grid.raster(image)
 ```
+
