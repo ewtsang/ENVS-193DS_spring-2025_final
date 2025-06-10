@@ -218,11 +218,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># A tibble: 5 × 3
   year  month mean_monthly_sst
   &lt;fct&gt; &lt;ord&gt;            &lt;dbl&gt;
-1 2023  Jul               16.3
-2 2022  Aug               17.5
-3 2023  May               14.3
-4 2022  Sep               19.3
-5 2021  Jan               13.9</code></pre>
+1 2022  Dec               14.8
+2 2020  Feb               14.7
+3 2023  Aug               18.5
+4 2019  Jun               15.8
+5 2019  Dec               15  </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#randomly display 5 rows from cleaned dataset (sst_clean) to inspect output</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -247,25 +247,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">"lightblue"</span>,<span class="st">"darkblue"</span>))(<span class="dv">6</span>)</span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#set custom blue color gradient representing 6 years</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">group =</span> year)) <span class="sc">+</span> </span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#adding lines grouped by year to show monthly trends </span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(), </span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">#adding individual data points to highlight each month's value</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>     <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="co">#labeling the title and axis of the plot</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Mean monthly surface temperature (C°) by year, 2018 to 2023"</span>,</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Month"</span>,</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Mean monthly sea surface temperature(C°)"</span>) <span class="sc">+</span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> <span class="co">#use a clean, minimal theme</span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid =</span> <span class="fu">element_blank</span>(), <span class="co">#remove background gridlines</span></span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="cn">NA</span>), <span class="co">#adding a black plot panel border</span></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.line =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"black"</span>), <span class="co">#add black axis lines</span></span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.ticks =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"black"</span>), <span class="co">#adding black axis ticks</span></span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.7</span>), <span class="co">#place legend inside plot at these coordinates</span></span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">12</span>,<span class="dv">20</span>) <span class="co">#set y axis range)</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">group =</span> year)) <span class="sc">+</span> </span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">#adding lines grouped by year to show monthly trends </span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(), </span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">#adding individual data points to highlight each month's value</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>     <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">#labeling the title and axis of the plot</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Mean monthly surface temperature (C°) by year, 2018 to 2023"</span>,</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Month"</span>,</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Mean monthly sea surface temperature(C°)"</span>) <span class="sc">+</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> <span class="co">#use a clean, minimal theme</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid =</span> <span class="fu">element_blank</span>(), <span class="co">#remove background gridlines</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="cn">NA</span>), <span class="co">#adding a black plot panel border</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.line =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"black"</span>), <span class="co">#add black axis lines</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.ticks =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"black"</span>), <span class="co">#adding black axis ticks</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.7</span>), <span class="co">#place legend inside plot at these coordinates</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -507,10 +510,20 @@ edge_distance | Predicted |       95% CI
 </section>
 <section id="problem-4.-affective-and-exploratory-visualizations" class="level2">
 <h2 class="anchored" data-anchor-id="problem-4.-affective-and-exploratory-visualizations">Problem 4. Affective and exploratory visualizations</h2>
-<p>Homework 3 Sketch</p>
+<section id="a.-comparing-visualizations" class="level3">
+<h3 class="anchored" data-anchor-id="a.-comparing-visualizations">a. Comparing visualizations</h3>
+<p>Compared to the exploratory visualizations made for Homework 2, visualizations made for Homework 3 were had more complexity in data represented, as well as in visual aesthetic. In Homework 2, we were prompted to create simple visualizations through <em>ggplot</em> representing categorical and continuous predictor variables. For Homework 3, we were tasked with translating our personal data into an “affective” visualization learned from lecture – this I decided to represent in a digital painting.</p>
+<p>Some similarities I noticed between was using a box plot to represent the data. Although I tweaked how this was shown in my illustrative affective visualization, I kept individual data points on both of the the visualizations.</p>
+<p><em>What patterns (e.g.&nbsp;differences in means/counts/proportions/medians, trends through time, relationships between variables) do you see in each visualization? Are these different between visualizations? If so, why? If not, why not?—————————————————————-</em></p>
+<p>I got constructive feedback on my drafts for my affective visualization thanks to my classmates, that emotional aspect was well represented, but it was more difficult at a first glance to tell what the data was showing. To change this, I added some clearer labels to my axis and made it so that the stem length represented my data points (call length in minutes). This way, it would be clearer upon the viewer that they were looking at data. <em>————circle back on this later—————-</em></p>
+</section>
+<section id="b.-sharing-you-affective-visualization" class="level3">
+<h3 class="anchored" data-anchor-id="b.-sharing-you-affective-visualization">b. Sharing you affective visualization</h3>
+<p><strong>My final visualization of <em>Family Call Length vs Week of Spring Quarter</em> </strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>image<span class="ot">&lt;-</span> <span class="fu">image_read</span>(<span class="st">"/Users/ewtsa/Documents/ENVS-193DS/GitHub/ENVS-193DS_homework-03/HW3Paper.jpg"</span>)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>grid<span class="sc">::</span><span class="fu">grid.raster</span>(image)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#final rendition</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>image<span class="ot">&lt;-</span> <span class="fu">image_read</span>(<span class="st">"/Users/ewtsa/Documents/ENVS-193DS/GitHub/ENVS-193DS_homework-03/HW3Draft.jpg"</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>grid<span class="sc">::</span><span class="fu">grid.raster</span>(image)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -519,9 +532,10 @@ edge_distance | Predicted |       95% CI
 </div>
 </div>
 </div>
-<p>Homework 3 Draft</p>
+<p><strong>Desc.</strong> <em>How my emotional and academic state affects my communication with family, centering the personal, emotional rhythms of time, and relationships over a statistical background. The artwork shows the distribution of phone call duration from Week 1 to Week 10 of Spring Quarter. The median call length generally decreases from the beginning (Weeks 1-5) to the end (Weeks 6-10), which supports the initial hypothesis that call duration become shorter as academic demands increase over time.</em></p>
+<p>Homework 3 Sketch</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>image<span class="ot">&lt;-</span> <span class="fu">image_read</span>(<span class="st">"/Users/ewtsa/Documents/ENVS-193DS/GitHub/ENVS-193DS_homework-03/HW3Draft.jpg"</span>)</span>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>image<span class="ot">&lt;-</span> <span class="fu">image_read</span>(<span class="st">"/Users/ewtsa/Documents/ENVS-193DS/GitHub/ENVS-193DS_homework-03/HW3Paper.jpg"</span>)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>grid<span class="sc">::</span><span class="fu">grid.raster</span>(image)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
@@ -531,7 +545,7 @@ edge_distance | Predicted |       95% CI
 </div>
 </div>
 </div>
-<p>Final Rendition</p>
+<p>Homework 3 Draft</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>image<span class="ot">&lt;-</span> <span class="fu">image_read</span>(<span class="st">"/Users/ewtsa/Documents/ENVS-193DS/GitHub/ENVS-193DS_homework-03/HW3Draft.jpg"</span>)</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>grid<span class="sc">::</span><span class="fu">grid.raster</span>(image)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -543,17 +557,6 @@ edge_distance | Predicted |       95% CI
 </div>
 </div>
 </div>
-<section id="a.-comparing-visualizations" class="level3">
-<h3 class="anchored" data-anchor-id="a.-comparing-visualizations">a. Comparing visualizations</h3>
-<p>Compared to the exploratory visualizations made for Homework 2, visualizations made for Homework 3 were had more complexity in data represented, as well as in visual aesthetic. In Homework 2, we were prompted to create simple visualizations through <em>ggplot</em> representing categorical and continuous predictor variables. For Homework 3, we were tasked with translating our personal data into an “affective” visualization learned from lecture – this I decided to represent in a digital painting.</p>
-<p>Some similarities I noticed between was using a box plot to represent the data. Although I tweaked how this was shown in my illustrative affective visualization, I kept individual data points on both of the the visualizations.</p>
-<p><em>What patterns (e.g.&nbsp;differences in means/counts/proportions/medians, trends through time, relationships between variables) do you see in each visualization? Are these different between visualizations? If so, why? If not, why not?—————————————————————-</em></p>
-<p>I got constructive feedback on my drafts for my affective visualization thanks to my classmates, that emotional aspect was well represented, but it was more difficult at a first glance to tell what the data was showing. To change this, I added some clearer labels to my axis and made it so that the stem length represented my data points (call length in minutes). This way, it would be clearer upon the viewer that they were looking at data. <em>————circle back on this later—————-</em></p>
-</section>
-<section id="b.-sharing-you-affective-visualization" class="level3">
-<h3 class="anchored" data-anchor-id="b.-sharing-you-affective-visualization">b. Sharing you affective visualization</h3>
-<p><strong>My final visualization of <em>Family Call Length vs Week of Spring Quarter</em> </strong></p>
-<p><strong>Desc.</strong> <em>How my emotional and academic state affects my communication with family, centering the personal, emotional rhythms of time, and relationships over a statistical background. The artwork shows the distribution of phone call duration from Week 1 to Week 10 of Spring Quarter. The median call length generally decreases from the beginning (Weeks 1-5) to the end (Weeks 6-10), which supports the initial hypothesis that call duration become shorter as academic demands increase over time.</em></p>
 </section>
 </section>
 

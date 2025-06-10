@@ -83,6 +83,7 @@ str(sst_clean)
 
 ### b. Visualize the data
 *how to add20 tick to yaxis---------------------------*
+
 ```{r 2b-sst-visualization}
 ggplot(data = sst_clean, #making visualization using cleaned sst data 
         aes(x = month, y = mean_monthly_sst, color = year, group = year)) + 
@@ -91,6 +92,9 @@ ggplot(data = sst_clean, #making visualization using cleaned sst data
     values = colorRampPalette(c("lightblue","darkblue"))(6)
   ) + 
   #set custom blue color gradient representing 6 years
+  scale_y_continuous(
+    limits = c(12,20) #set y axis range from 12-20°C
+  ) +
   geom_line(
     aes(group = year)) + 
   #adding lines grouped by year to show monthly trends 
@@ -221,7 +225,7 @@ ggplot(preds, aes(x = x, y = predicted, color = as.factor(group), fill = as.fact
         panel.border = element_rect(color = "black", fill = NA), #adding a black plot panel border
         axis.line = element_line(color = "black"), #adding a black axis line
         axis.ticks = element_line(color = "black"), #adding black axis ticks
-        legend.position = "right") + #setting legend position
+        legend.position.inside = "right") + #setting legend position
 scale_color_manual(values = c("2016" = "orange", "2019" = "yellowgreen")) + 
   scale_fill_manual(values = c("2016" = "orange", "2019" = "yellowgreen")) #sing visually distinct non-default colors for each season to improve visual clarity
 
@@ -255,9 +259,8 @@ I got constructive feedback on my drafts for my affective visualization thanks t
 ### b. Sharing you affective visualization
 **My final visualization of *Family Call Length vs Week of Spring Quarter* **
 
-Final Rendition
-
 ```{r}
+#final rendition
 image<- image_read("/Users/ewtsa/Documents/ENVS-193DS/GitHub/ENVS-193DS_homework-03/HW3Draft.jpg")
 grid::grid.raster(image)
 ```
