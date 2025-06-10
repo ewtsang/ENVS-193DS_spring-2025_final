@@ -79,6 +79,7 @@ str(sst_clean)
 ```
 
 ### b. Visualize the data
+*how to add20 tick to yaxis*
 ```{r sst-visualization}
 ggplot(data = sst_clean, #making visualization using cleaned sst data 
         aes(x = month, y = mean_monthly_sst, color = year, group = year)) +
@@ -101,7 +102,7 @@ labs(title = "Mean monthly surface temperature (C°) by year, 2018 to 2023",
     panel.border = element_rect(color = "black", fill = NA), #adding a panel border
     axis.line = element_line(color = "black"),
     axis.ticks = element_line(color = "black"), #adding axis ticks
-    legend.position = c(0.2, 0.8),
+    legend.position = c(0.2, 0.7),
   )  #remove background gridlines and legend box
 ```
 
@@ -120,8 +121,6 @@ In 2016, the nest boxes were newly deployed, while in 2019 they were established
 
 ### d. Table of models
 
-4 models total:
-
 | Model number | Edge Distance | Season          | Description                 |  
 |:------------:|:-------------:|:---------------:|:----------------------------|  
 | 0            |               |                 | no predictors (null model)  |
@@ -130,35 +129,73 @@ In 2016, the nest boxes were newly deployed, while in 2019 they were established
 | 3            |       X       |       X         | all predictors (full model) |    
 
 ### e. Run the models
-
-
-### f. Check the diagnostics
-
-
-### g. Select the best model
-
-```{r model-fitting}
-sp_data_clean <- clean_names(sp_data) |> 
-  filter(box_occupant == "swift parrot")
+```{r, results="hide"}
+sp_data_clean <- clean_names(sp_data)  
 
 model10 <- lm(sp ~ 1, data = sp_data_clean) #nopredictors
 
 model11 <- lm(sp ~ edge_distance, data = sp_data_clean) #edge distance
 
-mode12<- lm(sp ~ season, data = sp_data_clean) #season
+model12<- lm(sp ~ season, data = sp_data_clean) #season
 
-mode13 <- lm(sp ~ edge_distance+  season, data = sp_data_clean) #both predictors
+model13 <- lm(sp ~ edge_distance+  season, data = sp_data_clean) #both predictors
+```
 
-AICc(model10, model11, mode12, mode13) |> 
-  arrange(AICc)
+### f. Check the diagnostics
+
+#### Model 0, Null model
+
+```{r}
+sim0 <- simulateResiduals(Model10)
+par(mfrow = c(2,2))
+plot(model10)
+```
+
+#### Model 1, Distance as predictor
+
+```{r}
+sim1 <- simulateResiduals(Model11)
+par(mfrow = c(2,2))
+plot(model11)
 
 ```
+
+#### Model 2, Season as predictor
+
+```{r}
+sim2 <- simulateResiduals(Model12)
+par(mfrow = c(2,2))
+plot(model12)
+
+```
+
+#### Model 3, Both season and distance as predictor
+
+```{r}
+sim3 <- simulateResiduals(Model13)
+par(mfrow = c(2,2))
+plot(model13)
+
+```
+
+```{r}
+
+```
+
+### g. Select the best model
+
+```{r model-fitting}
+AICc(model10, model11, model12, model13) |> 
+  arrange(AICc)
+```
+
+The best model to use would be **Model 3**. 
 
 ### h. Visualize the model preductions
 
 
 ### i. Write a caption for your figure
-
+*Figure_*
 
 ### j. Calculate model predictions
 
