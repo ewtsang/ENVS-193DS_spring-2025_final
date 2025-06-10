@@ -18,13 +18,13 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 #loading in libraries
 library(tidyverse) #general use
 library(here) #organization
-library(gt)
+library(ggeffects) #model predictions
 library(janitor) #cleaning data frames
 library(readxl) #reading excel sheets
-library(dplyr) #
+library(dplyr) #data manipulation
 library(ggplot2) #creating figures
-library(magick) 
-library(DHARMa)
+library(magick) #image processing
+library(DHARMa) #regression modeling
 library(MuMIn) #model selection
 ```
 
@@ -44,10 +44,9 @@ In part one, the coworker used a correlation test to assess that there is no rel
 In part two, the coworker used a one-way ANOVA test to see whether average nitrogen load differs across multiple source types (urban land, atmospheric deposition, fertilizer, wastewater treatment, and grasslands)
 
 ### b. More information needed
-What should also be included are (1) Effect size/dist for both analyses. For example, in part 1, was correlation positive? negative? how strong was it? A p-value by itself did not indicate the strength or nature of the relationship. (2) Post-hoc comparison for part 2 is needed. Since there are multiple nitrogen sources, a significant ANOVA should be followed by pairwise comparisons *tukey hsd* to determine difference in sources. This would give better context for interpretation of which alnd uses are contributing the most to nitrogen.
+What should also be included are (1) Effect size/dist for both analyses. For example, in part 1, was correlation positive? negative? how strong was it? A p-value by itself did not indicate the strength or nature of the relationship. (2) Post-hoc comparison for part 2 is needed. Since there are multiple nitrogen sources, a significant ANOVA should be followed by pairwise comparisons (Tukey's HSD) to determine difference in sources. This would give better context for interpretation of which alnd uses are contributing the most to nitrogen.
 
 ### c. Suggestions for rewriting
-*add more here later* 
 Sites father from the river headwaters were associated with higher total annual nitrogen loads. We rejected the null hypotheses that there is no correlation between distance from headwater (km) and annual total nitrogen load (kg year-1). Using Pearson's correlation, r = correlation coefficient, p = 0.03, a = 0.05
 
 Nitrogen load varied significantly across different source types, indicating there is a key driver of elevated nitrogen levels to the system. We reject the null hypotheses that there is no difference in average nitrogen load between sources (urban land, atmospheric deposition, fertilizer, wastewater treatment, and grasslands) Using one way ANOVA, f=test statistic, df = degrees of freedom, p = 0.02, a = 0.05).A follow p post-hoc Tukey's HSD test determined that ___ source (mean difference = average kg/year, p = p value) had significantly higher nitrogen loads than ___source (mean difference = average kg/year, p = p-value) no significant differences were found between other sources.
@@ -72,7 +71,7 @@ sst_clean <- sst |>
 #drop duplicates
 
 sst_clean$year <- factor(sst_clean$year, levels = c("2018", "2019", "2020", "2021", "2022", "2023"))
-#display 5 rows from sst_clean
+#display 5 rows from sst_clean, in levels ("2018", "2019", "2020", "2021", "2022", and "2023"
 slice_sample(sst_clean, n = 5)
 #structure from sst_clean
 str(sst_clean)
@@ -82,12 +81,15 @@ str(sst_clean)
 *how to add20 tick to yaxis*
 ```{r sst-visualization}
 ggplot(data = sst_clean, #making visualization using cleaned sst data 
-        aes(x = month, y = mean_monthly_sst, color = year, group = year)) +
+        aes(x = month, y = mean_monthly_sst, color = year, group = year)) + 
+  #setting the axi, comparing month (x axis) and mean monthly sea surface temperature (y axis)
   scale_color_manual(
     values = colorRampPalette(c("lightblue","darkblue"))(6)
-  ) +
+  ) + 
+  #setting colors of the plot in 6 separate blues
   geom_line(
-    aes(group = year)) +
+    aes(group = year)) + 
+  #group by
   geom_point(
     aes(), 
   #each individual point is sorted by year 
@@ -108,6 +110,7 @@ labs(title = "Mean monthly surface temperature (C°) by year, 2018 to 2023",
 
 
 ## Problem 3. Data analysis
+
 Working with the nest box occupancy dataset from Stojanovic, D., Owens, G., Young, C.M., Alves, F. and Heinsohn, R. 2021. “Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird.” Restoration Ecology. DOI: 10.1111/rec.13319
 
 ### a. Response variable
@@ -144,46 +147,37 @@ model13 <- lm(sp ~ edge_distance+  season, data = sp_data_clean) #both predictor
 ### f. Check the diagnostics
 
 #### Model 0, Null model
-
 ```{r}
-sim0 <- simulateResiduals(Model10)
+sim0 <- simulateResiduals(model10)
 par(mfrow = c(2,2))
-plot(model10)
+plot(sim0)
 ```
 
 #### Model 1, Distance as predictor
-
 ```{r}
-sim1 <- simulateResiduals(Model11)
+sim1 <- simulateResiduals(model11)
 par(mfrow = c(2,2))
-plot(model11)
+plot(sim1)
 
 ```
 
 #### Model 2, Season as predictor
-
 ```{r}
-sim2 <- simulateResiduals(Model12)
+sim2 <- simulateResiduals(model12)
 par(mfrow = c(2,2))
-plot(model12)
+plot(sim2)
 
 ```
 
 #### Model 3, Both season and distance as predictor
-
 ```{r}
-sim3 <- simulateResiduals(Model13)
+sim3 <- simulateResiduals(model13)
 par(mfrow = c(2,2))
-plot(model13)
-
-```
-
-```{r}
+plot(sim3)
 
 ```
 
 ### g. Select the best model
-
 ```{r model-fitting}
 AICc(model10, model11, model12, model13) |> 
   arrange(AICc)
@@ -191,14 +185,45 @@ AICc(model10, model11, model12, model13) |>
 
 The best model to use would be **Model 3**. 
 
-### h. Visualize the model preductions
+### h. Visualize the model predictions
 
+```{r}
+library(ggeffects)
+sp_data_clean <- sp_data_clean |>
+  mutate(season = as.factor(season))
+
+# Generate predicted values for combinations of edge_distance and season
+preds <- ggpredict(model13, terms = c("edge_distance [all]", "season"))
+
+# Plot with ribbons, predictions, and jittered observed data
+ggplot(preds, aes(x = x, y = predicted, color = as.factor(group), fill = as.factor(group))) +
+  geom_line(size = 1.2) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.2, color = NA) +
+  geom_jitter(data = sp_data_clean, aes(x = edge_distance, y = sp, color = season), 
+              inherit.aes = FALSE, width = 20, height = 0.05, alpha = 0.3) +
+  labs(title = "Predicted Swift Parrot Nest Box Occupancy by Edge Distance and Season",
+       x = "Distance from Forest Edge (m)",
+       y = "Probability of Swift Parrot Occupancy",
+       color = "Season",
+       fill = "Season") +
+  theme_minimal() +
+  theme(panel.grid = element_blank(),
+        panel.border = element_rect(color = "black", fill = NA),
+        axis.line = element_line(color = "black"),
+        axis.ticks = element_line(color = "black"),
+        legend.position = "right") +
+scale_color_manual(values = c("2016" = "orange", "2019" = "yellowgreen")) +
+  scale_fill_manual(values = c("2016" = "orange", "2019" = "yellowgreen")) 
+
+```
 
 ### i. Write a caption for your figure
-*Figure_*
+*Figure 1.* Predicted probability of Swift Parrot nest box occupancy based on distance from forest edge and on season (2016 vs. 2019). Lines represent model predictions from the all predictors model (occupancy ~ edge_distance + season), and shaded areas are 95% confidence intervals. Points represent raw occupancy data, jittered for visibility. Data source: Stojanovic et al. (2021), Restoration Ecology.
 
 ### j. Calculate model predictions
+```{r}
 
+```
 
 ### k. Interpret your results
 Swift Parrots were less likely to use boxes farther from forest edge.
