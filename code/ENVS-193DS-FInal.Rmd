@@ -82,11 +82,11 @@ str(sst_clean)
 ```{r sst-visualization}
 ggplot(data = sst_clean, #making visualization using cleaned sst data 
         aes(x = month, y = mean_monthly_sst, color = year, group = year)) + 
-  #setting the axi, comparing month (x axis) and mean monthly sea surface temperature (y axis)
+  #setting the axis, comparing month (x axis) and mean monthly sea surface temperature (y axis)
   scale_color_manual(
     values = colorRampPalette(c("lightblue","darkblue"))(6)
   ) + 
-  #setting colors of the plot in 6 separate blues
+  #color gradient representing years
   geom_line(
     aes(group = year)) + 
   #group by
@@ -201,7 +201,7 @@ ggplot(preds, aes(x = x, y = predicted, color = as.factor(group), fill = as.fact
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.2, color = NA) +
   geom_jitter(data = sp_data_clean, aes(x = edge_distance, y = sp, color = season), 
               inherit.aes = FALSE, width = 20, height = 0.05, alpha = 0.3) +
-  labs(title = "Predicted Swift Parrot Nest Box Occupancy by Edge Distance and Season",
+  labs(title = "Predicted Swift Parrot Nest Box Occupancy by Distance and Season",
        x = "Distance from Forest Edge (m)",
        y = "Probability of Swift Parrot Occupancy",
        color = "Season",
@@ -218,11 +218,12 @@ scale_color_manual(values = c("2016" = "orange", "2019" = "yellowgreen")) +
 ```
 
 ### i. Write a caption for your figure
-*Figure 1.* Predicted probability of Swift Parrot nest box occupancy based on distance from forest edge and on season (2016 vs. 2019). Lines represent model predictions from the all predictors model (occupancy ~ edge_distance + season), and shaded areas are 95% confidence intervals. Points represent raw occupancy data, jittered for visibility. Data source: Stojanovic et al. (2021), Restoration Ecology.
+*Figure 1.* Predicted probability of Swift Parrot nest box occupancy based on distance from forest edge and on season (2016 vs. 2019). Lines represent model predictions from the all predictors model (occupancy ~ edge_distance + season), and shaded areas are 95% confidence intervals. Points represent raw occupancy data, jittered for visibility. Data source: Stojanovic, Dejan et al. (2021). Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird [Dataset]. Dryad. https://doi.org/10.5061/dryad.83bk3j9sb
 
 ### j. Calculate model predictions
 ```{r}
-
+pred <- ggpredict(model13, terms = c("edge_distance [0, 9000]", "season"))
+print(pred)
 ```
 
 ### k. Interpret your results
