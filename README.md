@@ -21,19 +21,21 @@ library(ggplot) # creating models
 
 ## Data and file information
 File structure:
-
 ```
 .
 ├── ENVS-193DS_workshop-08.Rproj
 ├── README.md
 ├── code                                     # code folder
-│   
+│  ├── ENVS-193DS-FInal_files               
+│  ├── ENVS-193DS-FInal.html                 # rendered output from Rmd file
+│  ├── ENVS-193DS-FInal.Rmd                  # coding file
 └── data                                     # data folder
-    └── 
+    ├── occdist.csv                          # swift parrot nest box data
+    └── ENVS-193DS-FInal.Rmd                 # sb lter sea surface temperature data
 ```
 
 All code is in the `code` folder. The code runs models, generates model predictions, and visualizes data.
 
 ## Rendered output
 Repo: https://github.com/ewtsang/ENVS-193DS_spring-2025_final.git
-Website:https://ewtsang.github.io/ENVS-193DS_spring-2025_final/
+Website:https://ewtsang.github.io/ENVS-193DS_spring-2025_final/code/ENVS-193DS-FInal
