@@ -46,15 +46,14 @@ In part two, the coworker used a one-way ANOVA test to see whether average nitro
 What should also be included are (1) Effect size/dist for both analyses. For example, in part 1, was correlation positive? negative? how strong was it? A p-value by itself did not indicate the strength or nature of the relationship. (2) Post-hoc comparison for part 2 is needed. Since there are multiple nitrogen sources, a significant ANOVA should be followed by pairwise comparisons (Tukey's HSD) to determine difference in sources. This would give better context for interpretation of which alnd uses are contributing the most to nitrogen.
 
 ### c. Suggestions for rewriting
-*revisit this problem-------------------------------*
 Sites father from the river headwaters were associated with higher total annual nitrogen loads. We rejected the null hypotheses that there is no correlation between distance from headwater (km) and annual total nitrogen load (kg year-1). Using Pearson's correlation, r = correlation coefficient, p = 0.03, a = 0.05
 
-Nitrogen load varied significantly across different source types, indicating there is a key driver of elevated nitrogen levels to the system. We reject the null hypotheses that there is no difference in average nitrogen load between sources (urban land, atmospheric deposition, fertilizer, wastewater treatment, and grasslands) Using one way ANOVA, f=test statistic, df = degrees of freedom, p = 0.02, a = 0.05).A follow p post-hoc Tukey's HSD test determined that ___ source (mean difference = average kg/year, p = p value) had significantly higher nitrogen loads than ___source (mean difference = average kg/year, p = p-value) no significant differences were found between other sources.
+Nitrogen load varied significantly across different source types; urban land contributed more nitrogen than atmospheric deposition which suggests that urban land is a key driver of elevated nitrogen levels in the system. We rejected the null hypothesis that there is no difference in average nitrogen load (kg year-1) between sources (urban land, atmospheric deposition, fertilizer, wastewater treatment, and grasslands) (one-way ANOVA, F=test statistic, df= degrees of freedom, p = 0.02, a = 0.05). A follow up post-hoc Tukey’s HSD test determined that urban land ( mean difference = mean kg/yr, ±SE, range = range, p = p-value ) had significantly higher nitrogen loads than atmospheric deposition (mean difference = mean kg/yr, ±SE, range = range, p= p-value ); no significant differences were found between the other sources: fertilizer, wastewater treatment, and grasslands.
 
 ## Problem 2. Data visualization
 Using data from the Santa Barbara Coastal LTER on sea surface temperature in the Santa Barbara Channel area
 
-*" Data was obtained from the NOAA National Centers for Environmental Information (NCEI) at 0.25° resolution for the time between 1982 and 2023. This Daily Optimum Interpolation Sea Surface Temperature (OISST) Analysis (Version 2.1) derived its data from satellite (Advanced Very High Resolution Radiometer (AVHRR)) and in situ platforms (i.e., ships and buoys) and yielded 18 gird points within the Santa Barbara Channel."*
+*"Data was obtained from the NOAA National Centers for Environmental Information (NCEI) at 0.25° resolution for the time between 1982 and 2023. This Daily Optimum Interpolation Sea Surface Temperature (OISST) Analysis (Version 2.1) derived its data from satellite (Advanced Very High Resolution Radiometer (AVHRR)) and in situ platforms (i.e., ships and buoys) and yielded 18 gird points within the Santa Barbara Channel."*
 
 ### a. Cleaning and summarizing
 ```{r 2a-data-cleaning}
@@ -82,7 +81,6 @@ str(sst_clean)
 ```
 
 ### b. Visualize the data
-
 ```{r 2b-sst-visualization}
 ggplot(data = sst_clean, #making visualization using cleaned sst data 
         aes(x = month, y = mean_monthly_sst, color = year, group = year)) + 
@@ -240,8 +238,7 @@ print(pred) #display tableof predictions
 ```
 
 ### k. Interpret your results
-Swift Parrots were less likely to use boxes farther from forest edge. Occupancy probability was higher in 2016 (new boxes) than 2019. This is likely because permanent boxes were learned and overtaken by competitors (esp. Common Starlings). Future management should prioritize temporary or seasonally-sealed boxes.
-*---------To understand the biology behind the trends you found, you need to read the paper and look at the figures. For which species do you see the opposite relationship between distance to forest edge and probability of occupancy?--------------*
+The predicted probabilities from the regression model (Figure 1) show that the Swift Parrots were less likely to use boxes farther from forest edge. At 0 m, the probability of occupancy probability was 0.48 in 2016 and 0.30 in 2019, while at 900 m, it dropped to 0.12 and 0.06 for 2016 and 2019 respectively(table in part j). This indicates a negative relationship between distance from forest edge and the probability of Swift Parrot occupancy, this is likely because permanent boxes were learned and overtaken by competitors (esp. Common Starlings). Future management should prioritize temporary or seasonally-sealed boxes.
 
 ## Problem 4. Affective and exploratory visualizations
 
@@ -250,30 +247,9 @@ Compared to the exploratory visualizations made for Homework 2, visualizations m
 
 Some similarities I noticed between was using a box plot to represent the data. Although I tweaked how this was shown in my illustrative affective visualization, I kept individual data points on both of the the visualizations.
 
-*What patterns (e.g. differences in means/counts/proportions/medians, trends through time, relationships between variables) do you see in each visualization? Are these different between visualizations? If so, why? If not, why not?----------------------------------------------------------------*
+In terms of patterns, the Homework 2 plot clearly showed differences in medians and ranges of call durations between weekdays and weekends using a traditional boxplot. These differences were evident numerically and visually. In contrast, the Homework 3 visualization used symbolic elements like plant stems to represent call length. While the same general trends were visible (e.g., longer call durations on weekends), they were embedded in the artwork, requiring a bit more interpretation.
 
 I got constructive feedback on my drafts for my affective visualization thanks to my classmates, that emotional aspect was well represented, but it was more difficult at a first glance to tell what the data was showing. To change this, I added some clearer labels to my axis and made it so that the stem length represented my data points (call length in minutes). This way, it would be clearer upon the viewer that they were looking at data.
-*------------circle back on this later----------------*
 
 ### b. Sharing you affective visualization
-**My final visualization of *Family Call Length vs Week of Spring Quarter* **
-
-```{r}
-#final rendition
-image<- image_read("/Users/ewtsa/Documents/ENVS-193DS/GitHub/ENVS-193DS_homework-03/HW3Draft.jpg")
-grid::grid.raster(image)
-```
-
- **Desc.** *How my emotional and academic state affects my communication with family, centering the personal, emotional rhythms of time, and relationships over a statistical background. The artwork shows the distribution of phone call duration from Week 1 to Week 10 of Spring Quarter. The median call length generally decreases from the beginning (Weeks 1-5) to the end (Weeks 6-10), which supports the initial hypothesis that call duration become shorter as academic demands increase over time.*
-
-Homework 3 Sketch
-```{r}
-image<- image_read("/Users/ewtsa/Documents/ENVS-193DS/GitHub/ENVS-193DS_homework-03/HW3Paper.jpg")
-grid::grid.raster(image)
-```
-
-Homework 3 Draft
-```{r}
-image<- image_read("/Users/ewtsa/Documents/ENVS-193DS/GitHub/ENVS-193DS_homework-03/HW3Draft.jpg")
-grid::grid.raster(image)
-```
+**present**
