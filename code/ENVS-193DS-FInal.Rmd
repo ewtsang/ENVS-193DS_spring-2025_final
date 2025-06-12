@@ -82,7 +82,6 @@ str(sst_clean)
 ```
 
 ### b. Visualize the data
-*how to add20 tick to yaxis---------------------------*
 
 ```{r 2b-sst-visualization}
 ggplot(data = sst_clean, #making visualization using cleaned sst data 
@@ -225,7 +224,7 @@ ggplot(preds, aes(x = x, y = predicted, color = as.factor(group), fill = as.fact
         panel.border = element_rect(color = "black", fill = NA), #adding a black plot panel border
         axis.line = element_line(color = "black"), #adding a black axis line
         axis.ticks = element_line(color = "black"), #adding black axis ticks
-        legend.position.inside = "right") + #setting legend position
+        legend.position = "right") + #setting legend position
 scale_color_manual(values = c("2016" = "orange", "2019" = "yellowgreen")) + 
   scale_fill_manual(values = c("2016" = "orange", "2019" = "yellowgreen")) #sing visually distinct non-default colors for each season to improve visual clarity
 
